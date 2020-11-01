@@ -12,7 +12,7 @@ Second, I have to fill those missing value. The first method I tried to solve th
 Finally, scraping the posters from the IMDB links.
 
 
-## Description for files in datasets
+## Description for files
 
 Except the origin item from [movielens](https://grouplens.org/datasets/movielens/), I build three files in './data/ml-100k' and './data/ml-1m'. (encoding='utf-8')
 
@@ -23,6 +23,10 @@ Except the origin item from [movielens](https://grouplens.org/datasets/movielens
 Only **links_artificial.csv** has the header.
 
 The **img** folder in './data/ml-100k' and './data/ml-1m' is created by myself to store the scraped posters, named by movie_id. And the **log** folder is also created by myself, which is used to store the running log.
+
+**Note:** Under the **log** folder, you could see the following error. Because this movie *Wallace & Gromit: The Best of Aardman Animation (1996)* is removed from IMDB, but I found the poster on the Internet. So, you can see this in the **movie_posters.csv**. The corresponding movie ID is 114 and 720 in dataset ml-100k and ml-1m respectively.
+
+> HTTPError: 404 114 https://www.imdb.com/title/tt0118114/
 
 ## Description for Scripts
 
@@ -61,7 +65,7 @@ Similarly, we can run these scripts on the dataset ml-1m by using the command be
 
 Thanks for this repo [movielens-posters](https://github.com/babu-thomas/movielens-posters).
 
-##To-Do
+## To-Do
 
 - [ ] Scarping the metadata from TMDB or OMDB.
 - [ ] Adding genome-tag and genome-scores to each movie.
