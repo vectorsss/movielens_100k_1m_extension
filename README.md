@@ -30,8 +30,8 @@ The **img** folder in './data/ml-100k' and './data/ml-1m' is created by myself t
 
 **Update**: For dataset *ml-1m* and *ml-100k*, I fetch those movies metadata from OMDB. You could see some new files in the corresponding folder.
 
-**metadata.pkl**: ((movie_id, title, imdbId), json) tuple
-**metadata_removed_useless.pkl**: DataFrame without useless features.
+- **metadata.pkl**: ((movie_id, title, imdbId), json) tuple
+- **metadata_removed_useless.pkl**: DataFrame without useless features.
 
 Also, under the **log** folder, you could see the output of the script *get_movies_metadata.py*. Including useless features and why they are useless.
 
@@ -64,7 +64,7 @@ The full data you can find in the following links.
     ```shell
     python get_movies_metadata.py ml-100k 0 > ./data/ml-100k/log/useless_features.log
     ```
-**Note:** The flag $0$ in step $3$ means fetching the data from OMDB by yourself. You must input your APIKEY in the correct location(line 19) in *get_movies_metadata.py*. If you are supposed to use the file I fetched before. But generate the *metadata_removed_useless.pkl* with a different threshold(default=0.6), you should change the threshold in line (144) and remove the flag $0$ or change it to $1$.
+**Note:** The flag *0* in step *3* means fetching the data from OMDB by yourself. You must input your APIKEY in the correct location(line 19) in *get_movies_metadata.py*. If you are supposed to use the file I fetched before. But generate the *metadata_removed_useless.pkl* with a different threshold(default=0.6), you should change the threshold in line (144) and remove the flag *0* or change it to *1*.
 
 Similarly, we can run these scripts on the dataset ml-1m by using the command below.
 
