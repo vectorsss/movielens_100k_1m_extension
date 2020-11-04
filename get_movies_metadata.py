@@ -30,9 +30,9 @@ def load_links(fname):
     """
 
     dtypes = {'movie_id': int, 'title': str, 'imdbId': str}
-    ml100k_links_artificial = pd.read_csv(DATA_DIR + fname + '/links_artificial.csv', \
+    links = pd.read_csv(DATA_DIR + fname + '/links_artificial.csv', \
                                           converters=dtypes, usecols=[0, 1, 2])
-    return ml100k_links_artificial
+    return links
 
 
 def search_movie(imdbId: str):

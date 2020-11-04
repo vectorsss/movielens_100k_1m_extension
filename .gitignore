@@ -1,4 +1,6 @@
 .DS_Store
+__pycache__
+.vscode
 data/ml-1m/img/*
 !data/ml-1m/img/README.md
 data/ml-100k/img/*
@@ -15,7 +17,5 @@ u.user
 *.pl
 *.sh
 data/ml-25m/genome-scores.csv
-data/ml-25m/genome-tags.csv
 data/ml-25m/ratings.csv
 data/ml-25m/tags.csv
-.vscode
