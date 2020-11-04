@@ -74,7 +74,7 @@ The full data you can find in the following links.
     ```shell
     python get_genome_scores.py ml-100k > ./data/ml-100k/log/missing_genome_scores.log
     ```
-**Note:** The flag *0* in step *3* means fetching the data from OMDB by yourself. You must input your APIKEY in the correct location(line 19) in *get_movies_metadata.py*. If you are supposed to use the file I fetched before. But generate the *metadata_removed_useless.pkl* with a different threshold(default=0.6), you should change the threshold in line (144) and remove the flag *0* or change it to *1*.
+**Note:** The flag *0* in step *3* means fetching the data from OMDB by yourself. You must input your APIKEY in the correct location(line 19) in *get_movies_metadata.py*. If you are supposed to use the file I fetched before. But generate the *metadata_removed_useless.pkl* with a different threshold(default=0.6), you should change the threshold in line 144 and remove the flag *0* or change it to *1*.
 
 Similarly, we can run these scripts on the dataset ml-1m by using the command below.
 
