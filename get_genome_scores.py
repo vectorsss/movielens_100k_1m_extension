@@ -52,13 +52,14 @@ def dropper(dic: dict, score: pd.DataFrame):
     Drop from score['movieId'] not in dic.values()
     Args:
         dic: origin Id to base Id mapping
-        score: DataFrame, ['movieId', 'tagId', 'relevance']
+        score: DataFrame from base files, ['movieId', 'tagId', 'relevance']
 
     Returns:
         dropped score
     """
     indices = pd.Int64Index([])
-    for i in list(dic.values()):
+    idx_set = set(dic.values())
+    for i in idx_set:
         indices = indices.append(score[score['movieId'] == i].index)
     score = score.iloc[indices]
     return score
