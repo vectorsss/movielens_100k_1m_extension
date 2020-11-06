@@ -1,5 +1,4 @@
 # movielens extension for ml-100k and  ml-1m
----
 
 ## Background
 
@@ -40,13 +39,15 @@ Also, under the **log** folder, you could see the output of the script *get_movi
 - **genome-scores.csv**: Same as *ml-25* but remove redundant data. (movieId not in origin dataset)
 - **blackList.pkl**: Some movies' IMDB ID those can not be found in *ml-25*.
 - **movieId_map.pkl**: Origin ID to ml-25 ID mapping.
+- **revised_movieId_map.pkl**: ml-25 movie ID to origin movie ID mapping.
 
 ## Description for Scripts
 
 - **get_movies_imdburl.py**: Find IMDB from base-files(ml-25m) and google. This script will build two files, the first two items, as I mentioned before, in the corresponding folder of the dataset.
 - **get_movies_poster.py**: Scraping posters from the IMDB URLs, which are stored in movie_urls.csv. This script will create the last CSV file, and fetch the posters which are available present. Some missing value would be printed at the console or output in a log file, which is up to yourself.
 - **get_movies_metadata.py**: Fetching the metadata from OMDB API. You have to upgrade your plan as a Patrons. I use a basic plan 1$/month. I stored my results in the corresponding dataset folder. Of course, you can run it by your self.
-- **get_genome_scores.py**: Find the genome score from *ml-25m*, to run this script, you should unzip the file *genome-scores.csv.zip* in the corresponding folder. This script will generate three files. *genome-scores.csv*, *blackList.pkl* and *movieId_map.pkl*. Also the corresponding tag file is same as *ml-25*. So, I copy this directly.
+- **get_genome_scores.py**: Find the genome score from *ml-25m*, to run this script, you should unzip the file *genome-scores.csv.zip* in the corresponding folder. This script will generate foue files. *genome-scores.csv*, *blackList.pkl* , *movieId_map.pkl* and *revised_movieId_map*. Also the corresponding tag file is same as *ml-25*. So, I copy this directly.
+- **remove_duplicate.py**: There are some duplicate value for movies. This script will help you to generate non-duplicated dataset. *Dropped_movies.csv*, *Dropped_ratings.csv*, *Dropped_users.csv* and *reordered-genome-scores.csv*. They have the same structure as origin data.
 
 Since I remove all useless files but keep the README file for each dataset, so you can clone this repository and run these script without prepare any data.
 
@@ -74,6 +75,10 @@ The full data you can find in the following links.
     ```shell
     python get_genome_scores.py ml-100k > ./data/ml-100k/log/missing_genome_scores.log
     ```
+5. Run **remove_duplicate.py** on the dataset ml-100k.
+    ```shell
+    python remove_duplicate.py ml-100k
+    ```
 **Note:** The flag *0* in step *3* means fetching the data from OMDB by yourself. You must input your APIKEY in the correct location(line 19) in *get_movies_metadata.py*. If you are supposed to use the file I fetched before. But generate the *metadata_removed_useless.pkl* with a different threshold(default=0.6), you should change the threshold in line 144 and remove the flag *0* or change it to *1*.
 
 Similarly, we can run these scripts on the dataset ml-1m by using the command below.
@@ -93,6 +98,10 @@ Similarly, we can run these scripts on the dataset ml-1m by using the command be
 4. Run **get_genome_scores.py** on the dataset ml-1m output in a log file.
     ```shell
     python get_genome_scores.py ml-1m > ./data/ml-1m/log/missing_genome_scores.log
+    ```
+5. Run **remove_duplicate.py** on the dataset ml-1m.
+    ```shell
+    python remove_duplicate.py ml-1m
     ```
 
 ## Acknowledgement
