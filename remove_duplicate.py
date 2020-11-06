@@ -11,6 +11,7 @@ import sys
 import pandas as pd
 import numpy as np
 from get_movies_metadata import load_links
+from get_movies_metadata import json_dump, useless_detecter
 
 DATA_DIR = './data/'
 
@@ -121,20 +122,65 @@ if __name__ == '__main__':
     # remapping data
     # fname movies id to new movies id mapping
     moviesIdMapping = {movie_id: i for i, movie_id in enumerate(movies['movie_id'])}
+    with open(DATA_DIR + fname + '/oldMovieId_to_remappedId.pkl', 'wb') as f:
+        pickle.dump(moviesIdMapping, f)
     movies['movie_id'] = list(map(lambda x: moviesIdMapping[x], movies['movie_id']))
     ratings['item_id'] = list(map(lambda x: moviesIdMapping[x], ratings['item_id']))
-    # dic_revised: ml-25m id to fname movie id mapping
-    with open(DATA_DIR + fname + '/revised_movieId_map.pkl', 'rb') as f:
-        dic_revised = pickle.load(f)
+    # dic_reversed: ml-25m id to fname movie id mapping
+    with open(DATA_DIR + fname + '/reversed_movieId_map.pkl', 'rb') as f:
+        dic_reversed = pickle.load(f)
     genome_scores = pd.read_csv(DATA_DIR + fname + '/genome-scores.csv')
-    genome_scores['movieId'] = list(map(lambda x: moviesIdMapping[dic_revised[x]], genome_scores['movieId']))
+    genome_scores['movieId'] = list(map(lambda x: moviesIdMapping[dic_reversed[x]], genome_scores['movieId']))
 
     # Old user id to new user id mapping
     usersIdMapping = {user_id: i for i, user_id in enumerate(users['user_id'])}
+    with open(DATA_DIR + fname + '/oldUserId_to_remappedId.pkl', 'wb') as f:
+        pickle.dump(usersIdMapping, f)
     users['user_id'] = list(map(lambda x: usersIdMapping[x], users['user_id']))
     ratings['user_id'] = list(map(lambda x: usersIdMapping[x], ratings['user_id']))
 
+    # remapping links_artificial.csv, movie_urls.csv and movie_posters.csv
+    url_header = ['movieId', 'url']
+    url_df = pd.read_csv(DATA_DIR + fname + '/movie_urls.csv', header=None, names=url_header)
+    url_df.drop_duplicates('url', inplace=True)
+    url_df['movieId'] = list(map(lambda x: moviesIdMapping[x], url_df['movieId']))
+
+    poster_header = ['movieId', 'poster_url']
+    poster_df = pd.read_csv(DATA_DIR + fname + '/movie_posters.csv', header=None, names=poster_header)
+    poster_df.drop_duplicates('poster_url', inplace=True)
+    poster_df['movieId'] = list(map(lambda x: moviesIdMapping[x], poster_df['movieId']))
+
+    links = load_links(fname)
+    links.drop_duplicates('imdbId', inplace=True)
+    links['movie_id'] = list(map(lambda x: moviesIdMapping[x], links['movie_id']))
+
+    # save as csv
     ratings.to_csv(DATA_DIR + fname + '/Dropped_ratings.csv', index=False)
     movies.to_csv(DATA_DIR + fname + '/Dropped_movies.csv', index=False)
     users.to_csv(DATA_DIR + fname + '/Dropped_users.csv', index=False)
-    genome_scores.to_csv(DATA_DIR + fname + '/reordered-genome-scores.csv', index=False)
+
+    genome_scores.to_csv(DATA_DIR + fname + '/remapped-genome-scores.csv', index=False)
+    url_df.to_csv(DATA_DIR + fname + '/remapped_movie_urls.csv', index=False, header=False)
+    poster_df.to_csv(DATA_DIR + fname + '/remapped_movie_posters.csv', index=False, header=False)
+    links.to_csv(DATA_DIR + fname + '/remapped_links_artificial.csv', index=False)
+
+    # remapping metadata
+    with open(DATA_DIR + fname + '/metadata.pkl', 'rb') as f:
+        metadatas = pickle.load(f)
+    metadatas = [[list(x), y] for x, y in metadatas]
+    print(len(metadatas))
+    remapped_metadatas = []
+    for item in metadatas:
+        try:
+            item[0][0] = moviesIdMapping[item[0][0]]
+            item[0] = tuple(item[0])
+            remapped_metadatas.append(item)
+        except KeyError:
+            pass
+    with open(DATA_DIR + fname + '/remapped_metadata.pkl', 'wb') as f:
+        pickle.dump(remapped_metadatas, f)
+    metadatas_df = json_dump(remapped_metadatas)
+    useless_features = useless_detecter(metadatas_df)
+    metadatas_df.drop(useless_features, axis=1, inplace=True)
+    with open(DATA_DIR + fname + '/remapped_metadata_removed_useless.pkl', 'wb') as f:
+        pickle.dump(metadatas_df, f)

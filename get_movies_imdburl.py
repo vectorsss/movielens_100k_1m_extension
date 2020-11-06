@@ -3,7 +3,7 @@
 # @Time    : 31.10.2020 22:42
 # @Author  : Zhao Chi
 # @Email   : dandanv5@hotmail.com
-# @File    : find_movies_imdburl.py
+# @File    : get_movies_imdburl.py
 # @Software: PyCharm
 import pandas as pd
 import numpy as np
