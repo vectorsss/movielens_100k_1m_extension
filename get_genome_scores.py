@@ -80,5 +80,12 @@ if __name__ == '__main__':
         pickle.dump(dic, f)
     with open(DATA_DIR + fname + '/blackList.pkl', 'wb') as f:
         pickle.dump(blackList, f)
+    # revise dic keep the first duplicated value
+    dic_revised = {}
+    for k, v in dic.items():
+        if dic_revised.get(v, -1) == -1:
+            dic_revised[v] = k
+    with open(DATA_DIR + fname + '/revised_movieId_map.pkl', 'wb') as f:
+        pickle.dump(dic_revised, f)
     genome_scores = dropper(dic, genome_scores)
-    genome_scores.to_csv(DATA_DIR + fname + '/genome_scores.csv', index=None)
+    genome_scores.to_csv(DATA_DIR + fname + '/genome-scores.csv', index=None)
