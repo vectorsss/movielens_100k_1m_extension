@@ -1,4 +1,4 @@
-user_id,age,gendre,occupation,zip_code
+user_id,age,gender,occupation,zip_code
 0,24,M,technician,85711
 1,53,F,other,94043
 2,23,M,writer,32067

@@ -59,7 +59,7 @@ def load_data_as_df(fname: str):
                              names=movies_headers, engine='python')
         # users data
         sep = r'|'
-        user_headers = ['user_id', 'age', 'gendre', 'occupation', 'zip_code']
+        user_headers = ['user_id', 'age', 'gender', 'occupation', 'zip_code']
         users = pd.read_csv(DATA_DIR + fname + files[2], header=None, delimiter=sep,
                             names=user_headers, engine='python')
     elif fname == 'ml-1m':
