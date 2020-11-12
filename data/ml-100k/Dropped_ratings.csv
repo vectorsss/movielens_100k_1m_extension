@@ -1,4 +1,4 @@
-user_id,item_id,rating,timestamp
+user_id,movie_id,rating,timestamp
 195,241,3.0,881250949.0
 185,300,3.0,891717742.0
 21,373,1.0,878887116.0

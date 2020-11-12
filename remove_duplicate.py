@@ -42,9 +42,9 @@ def load_data_as_df(fname: str):
         files = ['/u.data', '/u.item', '/u.user']
         # ratings data
         sep = '\t'
-        rating_headers = ["user_id", "item_id", "rating", "timestamp"]
+        rating_headers = ["user_id", "movie_id", "rating", "timestamp"]
         dtypes = {
-            'user_id': np.int32, 'item_id': np.int32,
+            'user_id': np.int32, 'movie_id': np.int32,
             'rating': np.float32, 'timestamp': np.float64}
         ratings = pd.read_csv(DATA_DIR + fname + files[0], header=None, sep=sep, names=rating_headers,
                               converters=dtypes)
@@ -67,9 +67,9 @@ def load_data_as_df(fname: str):
         files = ['/ratings.dat', '/movies.dat', '/users.dat']
         # ratings data
         sep = r'\:\:'
-        rating_headers = ["user_id", "item_id", "rating", "timestamp"]
+        rating_headers = ["user_id", "movie_id", "rating", "timestamp"]
         dtypes = {
-            'user_id': np.int32, 'item_id': np.int32,
+            'user_id': np.int32, 'movie_id': np.int32,
             'rating': np.float32, 'timestamp': np.float64}
         ratings = pd.read_csv(DATA_DIR + fname + files[0], header=None, delimiter=sep, names=rating_headers,
                               converters=dtypes, engine='python')
@@ -95,7 +95,7 @@ def remover_from_origin_data(fname: str, dupDataDic: dict):
     print('Length of origin rating data', len(ratings))
     indices = pd.Index([])
     for i in dupDataDic.values():
-        indices = indices.append(ratings[ratings['item_id'] == i].index)
+        indices = indices.append(ratings[ratings['movie_id'] == i].index)
     ratings = ratings.drop(index=indices, axis=0)
     print('Length of no duplicate rating data', len(ratings))
     # remove duplicate from movies
@@ -125,7 +125,7 @@ if __name__ == '__main__':
     with open(DATA_DIR + fname + '/oldMovieId_to_remappedId.pkl', 'wb') as f:
         pickle.dump(moviesIdMapping, f)
     movies['movie_id'] = list(map(lambda x: moviesIdMapping[x], movies['movie_id']))
-    ratings['item_id'] = list(map(lambda x: moviesIdMapping[x], ratings['item_id']))
+    ratings['movie_id'] = list(map(lambda x: moviesIdMapping[x], ratings['movie_id']))
     # dic_reversed: ml-25m id to fname movie id mapping
     with open(DATA_DIR + fname + '/reversed_movieId_map.pkl', 'rb') as f:
         dic_reversed = pickle.load(f)
